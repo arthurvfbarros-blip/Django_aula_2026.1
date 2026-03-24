@@ -1,0 +1,36 @@
+{% extends "forum/base.html" %}
+
+{% block content %}
+<h2>{{ pergunta.titulo }}</h2>
+<p><b>Descrição:</b> {{ pergunta.detalhe }}</p>
+<p><b>Tentativas:</b> {{ pergunta.tentativa }}</p>
+<p><b>Data:</b> {{ pergunta.data_criacao|date:"d/m/Y H:i" }}</p>
+<p><b>Autor:</b> {{ pergunta.usuario }}</p>
+{% block respostas %}
+<h3>Respostas</h3>
+<ul>
+{% for resposta in pergunta.resposta_set.all %}
+    <li>
+        {% extends "forum/detalhe.html" %}
+
+        {% block respostas %}
+        <h3>Adicionar resposta</h3>
+        <form method="post">
+            {% csrf_token %}
+            
+                <textarea rows="6" cols="50" id="texto" name="texto"></textarea>
+            <p>
+            <input type="submit" value="Salvar">
+        </form>
+        {% endblock %}
+
+        </form>
+    </li>
+
+{% endfor %}
+</ul>
+<a href="{% url 'forum:inserir_resposta' pergunta.id %}">
+    <button>Nova resposta</button>
+</a>
+{% endblock %}
+{% endblock %}
